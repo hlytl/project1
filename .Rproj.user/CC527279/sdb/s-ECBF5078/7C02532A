@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "recount_url = \"http://bioconductor.org/packages/release/BiocViews.html#___Software\"\ninstall.packages(\"rvest\")\nlibrary(rvest)\nhtmlfile = read_html(recount_url)\n\n\nnds = html_nodes(htmlfile, xpath='//*[@id=\"biocViews_package_table\"]')\ndat = html_table(nds)\ndat = as.data.frame(dat)\nhead(dat)\nsystem(\".phantomjs scrape-bioc.js\")\n",
+    "created" : 1474316691622.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3250459075",
+    "id" : "7C02532A",
+    "lastKnownWriteTime" : 1474570017,
+    "last_content_update" : 1474570017654,
+    "path" : "~/Desktop/project1/0919_class.R",
+    "project_path" : "0919_class.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

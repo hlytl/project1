@@ -1,0 +1,99 @@
+---
+title: "Week3"
+author: "Ding Ding"
+date: "September 22, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE,eval=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+list.dirs()
+datadir <- "./data/FARS2015NationalCSV "
+ACC_AUX <- read.csv(file=paste0(datadir,"/ACC_AUX.CSV"))
+summary(ACC_AUX)
+PER_AUX <- read.csv(file=paste0(datadir,"/PER_AUX.CSV"))
+colnames(PER_AUX)
+VEH_AUX <- read.csv(file=paste0(datadir,"/VEH_AUX.CSV"))
+ colnames(VEH_AUX) 
+ accident <- read.csv(file=paste0(datadir,"/accident.csv"))
+ library(data.table)
+tempdata <- fread("./data/acc_aux.sas7bdat")
+install.packages("sas7bdat")
+library(sas7bdat)
+install.packages("downloader")
+library(downloader)
+tempdata <- read.sas7bdat("./data/acc_aux.sas7bdat")
+url <- paste0("ftp://ftp.nhtsa.dot.gov/fars/",seq(1982,2012),"/Auxiliary_FARS_Files/Auxiliary_FARS_SAS_",seq(1982,2012),".zip")
+setwd("~/Downloads/FARS")
+for(i in 1:length(url)){
+  download(url[i],
+    destfile=paste0("~/Downloads/FARS/",(i+1981),".zip"))
+}
+for(i in 1982:2014){
+  dir.create(paste0("~/Downloads/FARS/",i))
+}
+for(i in 1:(length(url)+1)){
+unzip(paste0((i+1981),".zip"),files=paste0("~/Downloads/FARS/",(i+1981)))
+}
+tempname <- seq(1982,2010)
+tempname <- as.character(tempname)
+for(i in 1982:2010){
+unzip(paste0(i,".zip"))
+file.rename("FARS",tempname[i-1981])
+}
+
+tempdata <- read.sas7bdat(paste0("~/Downloads/FARS","/2000/","acc_aux.sas7bdat"))
+tempdata1 <- read.sas7bdat(paste0(getwd(),"/1985/","acc_aux.sd2"))
+install.packages("Hmisc")
+library(Hmisc)
+tempdata1 <- sas.get(paste0(getwd(),"/1985/"), "datafile")
+
+####since 1999 the sas file is in .sas7bdat
+library(lubridate)
+data_download_data <- now()
+acc_aux <- list()
+per_aux <- list()
+veh_aux <- list()
+for(i in 1999:2014){
+  acc_aux[[i-1998]] <- read.sas7bdat(paste0("~/Downloads/FARS/",i,"/acc_aux.sas7bdat"))
+  per_aux[[i-1998]] <- read.sas7bdat(paste0("~/Downloads/FARS/",i,"/per_aux.sas7bdat"))
+  veh_aux[[i-1998]] <- read.sas7bdat(paste0("~/Downloads/FARS/",i,"/veh_aux.sas7bdat"))
+
+}
+  acc_aux[[i-1998]] <- read.sas7bdat("acc_aux.sas7bdat")
+  per_aux[[i-1998]] <- read.sas7bdat("per_aux.sas7bdat")
+  veh_aux[[i-1998]] <- read.sas7bdat("veh_aux.sas7bdat")
+      acc_aux[[16]] <- read.sas7bdat("acc_aux.sas7bdat")
+  per_aux[[16]] <- read.sas7bdat("per_aux.sas7bdat")
+  veh_aux[[16]] <- read.sas7bdat("veh_aux.sas7bdat")
+    acc_aux[[17]] <- ACC_AUX
+  per_aux[[17]] <- PER_AUX
+  veh_aux[[17]] <- VEH_AUX
+save(acc_aux, per_aux, veh_aux,file="0922.RData")
+check <- lapply(acc_aux,colnames)
+year_x <- sapply(acc_aux,function(x) unique(x$YEAR))
+case_y <- sapply(acc_aux,function(x) length(unique(x$ST_CASE)))
+plot(as.factor(year_x),case_y,ylim = c(0,50000),xlab="year",ylab="total_case")
+state_y <- lapply(acc_aux,function(x) table(x$STATE))
+lengths(state_y)
+for(i in 2:length(state_y)){
+temp<- identical(names(state_y[[1]]),names(state_y[[i]]))
+print(temp)
+}
+state_y <- as.data.frame(state_y)
+dim(state_y)
+state_y1 <- state_y[,seq(2,34,by=2)]
+plot(as.factor(state_y[,31]),state_y[,32],xaxt="n",xlab="state",ylab="total_case_2015")
+axis(1,at=1:51,labels=as.factor(state_y[,31]),cex.axis=0.6,tick = 0.2)
+for(i in 1:nrow(state_y1)){
+  plot((year_x),state_y1[i,],type="o",xlab=paste0("state",state_y[i,1]),ylab="case_by_state")
+}
+```
+
+```{r plot}
+plot(as.factor(state_y[,31]),state_y[,32],xaxt="n",xlab="state",ylab="total_case_2015")
+axis(1,at=1:51,labels=as.factor(state_y[,31]),cex.axis=0.6,tick = 0.2)
+for(i in 1:nrow(state_y1)){
+  plot((year_x),state_y1[i,],type="o",xlab=paste0("state",state_y[i,1]),ylab="case_by_state")
+}
+```
