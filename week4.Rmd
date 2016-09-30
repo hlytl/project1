@@ -1,0 +1,76 @@
+---
+title: "Week4"
+author: "Ding Ding"
+date: "September 29, 2016"
+output: html_document
+---
+
+```{r echo=FALSE,results='hide',message=FALSE}
+#list.files("./data/FARS2015NationalCSV/")
+setwd("~/Desktop/project1/data/FARS2015NationalCSV ")
+#list.files()
+library(data.table)
+acc_aux <- fread("ACC_AUX.CSV")
+per_aux <- fread("PER_AUX.CSV")
+veh_aux <- fread("VEH_AUX.CSV")
+library(dplyr)
+temp <- select(acc_aux,STATE,COUNTY) %>% group_by(STATE) %>% summarize(case=n() )
+state_no_acc <- temp$STATE
+setwd("~/Desktop/project1/data")
+state_no <- read.csv("state_no.txt",header = FALSE)
+state_no <- state_no$V1
+state_no <- data.frame(number=as.integer(sapply(state_no,function(x) gsub(" ([a-zA-Z])*","",x))),state_name=as.character(sapply(state_no,function(x) gsub("[0-9][0-9] ","",x))),stringsAsFactors = FALSE)
+state_no <- state_no[state_no$number %in% state_no_acc,]
+colnames(state_no) <- c("STATE","state_name")
+```
+
+### What I have done
+
+####1. Got the population of all states and all counties of United States by July 1, 2015.
+
+####2. Checked the states and counties information with the data in FARS
+
+####3. Adjusted the fatality cases by the population for each states and counties.
+
+```{r echo=FALSE,message=FALSE}
+setwd("~/Desktop/project1/data")
+par(mfrow=c(1,2))
+plot(temp$STATE,temp$case,xlab="state_no",ylab="case_no")
+library(readxl)
+all_popu <- read_excel("PEP_2015_PEPSR6H.xls",skip=4,col_names = FALSE)
+state_popu <- all_popu[1:52,1:2]
+colnames(state_popu) <- c("state_name","population")
+state_popu$population <- sapply(state_popu$population,function(x) gsub(",","",x))
+state_popu$population <- as.integer(state_popu$population)
+library(data.table)
+#state_no_popu <- merge(x=state_no,y=state_popu,by="number",all.x=FALSE,all.y=TRUE)
+state_no_popu <- left_join(x=state_no,y=state_popu,by="state_name")
+state_no_case <- temp
+state_case_popu <- left_join(x=state_no_case,y=state_no_popu,by="STATE")
+plot(state_case_popu$STATE,(state_case_popu$case/state_case_popu$population)*10000,xlab="state_no",ylab="case per 10,000 population")
+#dev.off()
+```
+
+### What I still need to do
+
+#### 1. Use the case per 10,000 population for each state as a response, to find the variable which is relevant and affect the fatality rate most, such as climate, day of week, National Highway Traffic Safety Administration(NHTSA) etc.
+#### 2. Calculate the case per 10,000 population for each county, and maybe 2000-2015, repeat analysis in 1.
+
+### Something to share 
+
+#### 1. To get the population data
+     
+     http://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=bkmk
+
+```{r echo=FALSE,results='hide',message=FALSE}
+### Introduction
+
+
+### Method
+#### Description
+#### Definition
+#### Structures
+
+### Results
+
+```

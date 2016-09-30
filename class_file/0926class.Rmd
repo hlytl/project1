@@ -1,0 +1,48 @@
+---
+title: "0926class"
+author: "Ding Ding"
+date: "September 26, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r dyplr}
+install.packages("gapminder")
+install.packages("dplyr")
+library(dplyr)
+library(gapminder)
+gtbl <- gapminder
+glimpse(gtbl)
+filter(gtbl,year>1980)
+arrange(gtbl,year)
+arrange(gtbl,des(year))
+gtbl <- mutate(gtbl,newVar=1)
+distinct(gtbl)
+sample_n(gtbl,3)
+sample_frac(gtbl,0.01)
+```
+
+
+```{r pipelines}
+gtbl %>% head
+head(gtbl)
+gtbl %>% head(3)
+gtbl %>% filter(continent=="Asia") %>%
+         filter(lifeExp<65) %>% 
+         sample_n(10)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

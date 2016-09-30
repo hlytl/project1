@@ -1,0 +1,32 @@
+---
+title: "second_week"
+author: "Ding Ding"
+date: "September 15, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Project
+### Option2:Analyze the traffic fatality data to identify any geographic, time varying, or other characteristics that are associated with traffic fatalities:
+
+```{r download_data}
+library(lubridate)
+data_download_time <- now()
+data_download_time
+pdf_url <- "http://www-nrd.nhtsa.dot.gov/Pubs/811364.pdf"
+download.file(pdf_url,"readme.pdf")
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r introduction, echo=FALSE}
+
+```
+
+### Introduction

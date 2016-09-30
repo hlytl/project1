@@ -91,7 +91,9 @@ for(i in 1:nrow(state_y1)){
 ```
 
 ```{r plot}
-plot(as.factor(state_y[,31]),state_y[,32],xaxt="n",xlab="state",ylab="total_case_2015")
+plot(as.factor(state_y[,31]),state_y[,32],xaxt="n",xlab="state",ylab="total_case_2014")
+axis(1,at=1:51,labels=as.factor(state_y[,31]),cex.axis=0.6,tick = 0.2)
+plot(as.factor(state_y[,33]),state_y[,34],xaxt="n",xlab="state",ylab="total_case_2015")
 axis(1,at=1:51,labels=as.factor(state_y[,31]),cex.axis=0.6,tick = 0.2)
 for(i in 1:nrow(state_y1)){
   plot((year_x),state_y1[i,],type="o",xlab=paste0("state",state_y[i,1]),ylab="case_by_state")

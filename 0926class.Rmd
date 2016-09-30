@@ -1,0 +1,70 @@
+---
+title: "0926class"
+author: "Ding Ding"
+date: "September 26, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r dyplr}
+install.packages("gapminder")
+install.packages("dplyr")
+library(dplyr)
+library(gapminder)
+gtbl <- gapminder
+glimpse(gtbl)
+filter(gtbl,year>1980)
+arrange(gtbl,year)
+arrange(gtbl,des(year))
+gtbl <- mutate(gtbl,newVar=1)
+distinct(gtbl)
+sample_n(gtbl,3)
+sample_frac(gtbl,0.01)
+```
+
+
+```{r pipelines}
+gtbl %>% head
+head(gtbl)
+gtbl %>% head(3)
+gtbl %>% filter(continent=="Asia") %>%
+         filter(lifeExp<65) %>% 
+         sample_n(10)
+gtbl %>% group_by(continent) %>%
+         summarize(aveLife=mean(lifeExp))
+
+gtbl %>% group_by(continent) %>%
+ summarize(aveLife=mean(lifeExp),n=n(),first=first(),third=nth(3))
+
+
+url<- "https://www.dropbox.com/s/7bg2pvzmcv4di3v/1000genomes.xlsx?dl=0"
+data <- download(url,destfile="0926")
+library(xlsx)
+install.packages("readxl")
+library(readxl)
+data <- read.xlsx2("1000genomes.xlsx",sheetIndex = 4,header = FALSE)
+data <- read_excel("1000genomes.xlsx",sheet = 4,skip=1)
+
+data1 <- data[3:nrow(data),1:5] 
+colnames(data1) <- 
+temp <- as.vector(data[2,])
+names(temp) <- NULL
+data1 %>% group_by(X2) %>% summarize(sum(as.numeric(X3)))
+data1 %>% group_by(X1) %>% summarize(sum(as.numeric(X3)))
+data1 %>% filter(X1=="BCM") %>% filter(X5=="1")
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

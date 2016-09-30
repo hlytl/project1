@@ -1,0 +1,41 @@
+---
+title: "0928class"
+author: "Ding Ding"
+date: "September 28, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r join}
+url <- "https://www.dropbox.com/s/7bg2pvzmcv4di3v/1000genomes.xlsx?dl=0"
+ download.file(url,destfile = "./data1.xlsx")
+ library(readxl)
+ datasets <- "data.xlsx"
+ data <- read_excel(path="1000genomes.xlsx",sheet = 4,skip=1)
+  data1 <- read_excel(path="1000genomes.xlsx",sheet = 1)
+  library(dplyr)
+  temp <- inner_join(data,data1)
+  left_join(data,data1)
+  #do not keep duplicate
+  #tips: check the two datasets have the same colname
+  #      check the column with same name the same class
+  semi_join(data,data1)
+ list.files()
+ library(readxl)
+ library(data.table)
+ data <- read.table("data.xlsx",header = FALSE)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r p}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
