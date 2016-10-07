@@ -1,0 +1,34 @@
+---
+title: "Week5"
+author: "Ding Ding"
+date: "October 7, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dataset
+
+1. I have the traffic fatality data from 1975 to 2015. First I would use the data of 2000 to 2015 to analysis and try to answer the scientific questions below. And I would use the data of 1975 to 1999 if necessary.
+
+2. The population data at state and county level of US in 2015(data of former years are avaialbe), which I would used to adjust the absolute fatality case to case per 100,000 person.
+
+3. The data in 1 contains many features including information of the driver, road, envirionment, car , time of the case etc, from which I would choose useful features to do the modeling and analysis
+
+
+## Questions 
+
+1. For a single year, what factors affect the case per 100,000 person and how much they contribute to the total case. Are the factors similar for each year? How much the fatality can be explained by the factors I found.
+
+2. Are there any other factors not in the dataset now, like the income level, oil price, policy can affect the fatality rate along the years.
+
+
+## Analysis Plan
+
+1. Choose the freatures: pick one out of the replicates; try all features or choose by random.
+
+2. Response: the cases per 100,000 people for a state for a within a year; the cases per 100,000 people for counties of a state for a within a year; case per day.
+
+3. Modeling: linear regression; generalized linear model by year, or by states.
