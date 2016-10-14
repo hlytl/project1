@@ -1,0 +1,129 @@
+---
+title: "1003_05class"
+author: "Ding Ding"
+date: "October 3, 2016"
+output: html_document
+---
+
+
+```{r dealwithdatabase}
+library(dplyr)
+library(babynames)
+#teach yourself how to use sel
+translate_sql(mean(x))
+#debug for errors in getting data from database with sql
+how_female = my_db %>% 
+tbl("babynames") %>% 
+group_by(name) %>% 
+summarize(m=mean(sex=="F"))
+explain(how_female)
+###practice
+install.packages('nycflights13')
+library(nycflights13)
+install.packages("pryr")
+library(pryr)
+object_size(flights)
+
+
+my_db <- src_sqlite("my_db.sqlite3",
+create = T)
+flights <- copy_to(my_db, 
+flights, temporary = FALSE)
+src_tbls(my_db)
+tbl(my_db,"flights")
+src_tbls(my_db)
+newtbl = my_db %>% 
+tbl("flights") %>% filter(carrier="AA")
+output = newtbl %>% collect()
+
+```
+
+```{r string}
+library(readxl)
+kg = read_excel("1000genomes.xlsx",sheet=4,skip=1)
+table(kg$Center)
+library(stringr)
+
+```
+
+### 1005
+```{r tidydata}
+library(dplyr)
+install.packages("tidytext")
+library(tidytext)
+txt = c("These are words", "so are these", "this is running on")
+sentence = c(1,2,3)
+dat = tibble(txt,sentence )
+unnest_tokens(dat,tok,txt)
+```
+
+```{r books}
+install.packages("janeaustenr")
+library(janeaustenr)
+original_books <- austen_books() %>%
+  group_by(book) %>%
+  mutate(linenumber = row_number()) %>%
+  ungroup()
+tidy_books <- original_books %>%
+  unnest_tokens(word, text)
+install.packages("SnowballC")
+library(SnowballC)
+wordStem(c("running","fasted"))
+data("stop_words")
+stop_words
+tidy_books <- tidy_books %>%
+  anti_join(stop_words)
+
+install.packages("tm")
+library(tm)
+install.packages("topicmodels")
+library(topicmodels)
+data(AssociatedPress)
+class(AssociatedPress)
+comparison <- tidy(AssociatedPress) %>%
+    count(word = term) %>%
+    rename(AP = n) %>%
+    inner_join(count(tidy_books, word)) %>%
+    rename(Austen = n) %>%
+    mutate(AP = AP / sum(AP),
+           Austen = Austen / sum(Austen),diff=AP - Austen) %>% arrange(diff)
+
+install.packages("tidyr")
+library(tidyr)
+bing <- sentiments %>%
+  filter(lexicon == "bing") %>%
+  select(-score)
+
+janeaustensentiment <- tidy_books %>%
+  inner_join(bing) %>% 
+  count(book, index = linenumber %/% 80, sentiment) %>% 
+  spread(sentiment, n, fill = 0) %>% 
+  mutate(sentiment = positive - negative)
+
+library(ggplot2)
+
+ggplot(janeaustensentiment, aes(index, sentiment, fill = book)) +
+  geom_bar(stat = "identity", show.legend = FALSE) +
+  facet_wrap(~book, ncol = 2, scales = "free_x")
+```
+
+```{r}
+load(url("http://varianceexplained.org/files/trump_tweets_df.rda"))
+data <- trump_tweets_df 
+data1 <- trump_tweets_df %>% select(id, created,statusSource,text)
+temp <- gsub("<a.*for ","",data1$statusSource[1])
+system <- lapply(data1$statusSource,function(x){gsub("<a.*for ","",x)})
+system <- lapply(system,function(x){gsub("</a>","",x)})
+system <- unlist(system)
+data1$statusSource <- system
+timeof <- lapply(data1$created,function(x){strftime(x,format="%H:%M:%S")})
+timeof <- unlist(timeof)
+data1$createdtime <- timeof
+hist(data1$createdtime[data1$statusSource=="iphone"])
+library(tidytext)
+data <- sentiments %>%filter(lexicon == "nrc")
+twitter <- data1$text
+head(twitter)
+data1$sentiment <- data1$sentiment
+data2 <- inner_join()
+```
