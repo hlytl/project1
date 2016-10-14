@@ -2,7 +2,7 @@
 title: "Week6"
 author: "Ding Ding"
 date: "October 12, 2016"
-output: html_document
+output: pdf_document
 ---
 
 ```{r echo=FALSE,results='hide',message=FALSE}
@@ -35,7 +35,7 @@ person_whole$A_PERINJ <- ifelse(person_whole$A_PERINJ==6,0,1)
 
 ## Introduction
 
-Nation's highways in motor vehicle traffice crashes result in  35,092 lives lost, 45495 of injured victims, and bllions of dollars in property damage[1]. For all those injuried in crashes, four variables play key role for survivingthrough the accidents are location of the person in the crash, alcohol,restriction use and extrication. Location in the crash includes pedestrian,pedalcyclist, driver and occupant in different position in the vehicle. Alcohol is tested with Breathalyzer “BAC”. Extrication is if equipment or other force was used to remove this person from the vehicle. 
+Nation's highways in motor vehicle traffice crashes result in  35,092 lives lost, 45,495 of injured victims, and bllions of dollars in property damage[1]. For all those injuried in crashes, four variables play key role for surviving through the accidents are location of the person in the crash, alcohol,restriction use and extrication. Location in the crash includes pedestrian,pedalcyclist, driver and occupant in different position in the vehicle. Alcohol is tested with Breathalyzer “BAC”. Extrication is if equipment or other force was used to remove this person from the vehicle. 
 
 Understanding the relationship between chance of survival fatality crash to variables like location in the crash can help us to characterize the fatal cases and try to improve the survival rate. Here we performed an analysis to determine if there was a significant association between survival rate and the key variable mentioned above. Using exploratory analysis and logistic regression method we show that there is a significant relationship between survial rate and the location of the victim in the crash, alcohol positive and extrication,even after adjusting for important confounders such as age, eject and cross-section. 
 
